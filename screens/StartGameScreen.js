@@ -12,6 +12,7 @@ import { useState } from "react";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import COLORS from "../constants/colors";
+import NumberContainer from "../components/NumberContainer";
 
 export default StartGameScreen = (props) => {
   const [enteredValue, setEnteredNumber] = useState(null);
@@ -23,32 +24,41 @@ export default StartGameScreen = (props) => {
   };
 
   const resetHandler = () => {
-    setEnteredNumber('');
+    setEnteredNumber("");
     setConfirmed(false);
   };
 
   const confirmHandler = () => {
-    const choseNumber = parseInt(enteredValue)
-    if(isNaN(choseNumber) || choseNumber <= 0 || choseNumber > 99) {
-        Alert.alert("Warning", 'Number has to be between 1 and 99', [
-            {
-                text: "OK",
-                style: "destructive",
-                onPress: resetHandler
-            }
-        ])
-        return;
+    const choseNumber = parseInt(enteredValue);
+    if (isNaN(choseNumber) || choseNumber <= 0 || choseNumber > 99) {
+      Alert.alert("Warning", "Number has to be between 1 and 99", [
+        {
+          text: "OK",
+          style: "destructive",
+          onPress: resetHandler,
+        },
+      ]);
+      return;
     }
 
-    setConfirmed(true)
-    setConfirmedNumber(choseNumber)
-    setEnteredNumber('')
+    setConfirmed(true);
+    setConfirmedNumber(choseNumber);
+    setEnteredNumber("");
   };
 
-  let confirmedOutput
 
-  if(isConfirmed) {
-      confirmedOutput = <Text>Chosen Number: {confirmedNumber}</Text>
+  let confirmedOutput;
+
+  if (isConfirmed) {
+    confirmedOutput = (
+      <Card style={styles.confirmCard}>
+        <View style={styles.confirmText}>
+          <Text>Chosen Number:</Text>
+          <NumberContainer>{confirmedNumber}</NumberContainer>
+        </View>
+        <Button title="Start game!" onPress={() => props.onStartGame(confirmedNumber)} />
+      </Card>
+    );
   }
 
   return (
@@ -111,6 +121,9 @@ const styles = StyleSheet.create({
     width: 300,
     maxWidth: "80%",
     alignItems: "center",
+  },
+  confirmCard: {
+    marginVertical: 20,
   },
   buttonContainer: {
     flexDirection: "row",
