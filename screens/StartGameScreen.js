@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   Button,
   TouchableWithoutFeedback,
@@ -46,17 +45,19 @@ export default StartGameScreen = (props) => {
     setEnteredNumber("");
   };
 
-
   let confirmedOutput;
 
   if (isConfirmed) {
     confirmedOutput = (
       <Card style={styles.confirmCard}>
         <View style={styles.confirmText}>
-          <Text>Chosen Number:</Text>
+          <Text style={styles.text}>Chosen Number:</Text>
           <NumberContainer>{confirmedNumber}</NumberContainer>
         </View>
-        <Button title="Start game!" onPress={() => props.onStartGame(confirmedNumber)} />
+        <Button
+          title="Start game!"
+          onPress={() => props.onStartGame(confirmedNumber)}
+        />
       </Card>
     );
   }
@@ -66,7 +67,7 @@ export default StartGameScreen = (props) => {
       <View style={styles.screen}>
         <Text style={styles.title}>Start a new game!</Text>
         <Card style={styles.card}>
-          <Text>Select a number</Text>
+          <Text style={styles.text}>Select a number</Text>
 
           <Input
             value={enteredValue}
@@ -110,12 +111,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     marginVertical: 10,
+    fontFamily: "open-sans-bold",
+  },
+  text: {
+    fontFamily: "open-sans",
   },
   button: {
-    // flex: 1,
-    // minWidth: "45%",
     width: 74,
-    // padding: "auto",
   },
   card: {
     width: 300,
@@ -139,7 +141,6 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 100,
-    // backgroundColor: "#efefef",
     textAlign: "center",
   },
 });
