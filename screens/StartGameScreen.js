@@ -54,10 +54,9 @@ export default StartGameScreen = (props) => {
           <Text style={styles.text}>Chosen Number:</Text>
           <NumberContainer>{confirmedNumber}</NumberContainer>
         </View>
-        <Button
-          title="Start game!"
-          onPress={() => props.onStartGame(confirmedNumber)}
-        />
+        <MainButton onPress={() => props.onStartGame(confirmedNumber)}>
+          Start game!
+        </MainButton>
       </Card>
     );
   }
@@ -79,19 +78,21 @@ export default StartGameScreen = (props) => {
           />
           <View style={styles.buttonContainer}>
             <View style={styles.button}>
-              <Button
-                title="Reset"
-                color={COLORS.accent}
+              <MainButton
+                style={{backgroundColor: COLORS.accent}}
                 onPress={resetHandler}
-              />
+              >
+                Reset
+              </MainButton>
             </View>
             <View styles={styles.button}>
-              <Button
+              <MainButton
                 disabled={(enteredValue || 0) === 0}
-                title="Confirm"
-                color={COLORS.primary}
+                style={{backgroundColor: COLORS.primary}}
                 onPress={confirmHandler}
-              />
+                >
+                Confirm
+              </MainButton>
             </View>
           </View>
         </Card>

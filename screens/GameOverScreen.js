@@ -31,7 +31,7 @@ export default GameOverScreen = (props) => {
         rounds to guess your number
       </Text>
       <NumberContainer>{props.userNumber}</NumberContainer>
-      <Button title="Restart" onPress={() => restartHandler()} />
+      <MainButton onPress={() => restartHandler()} >Restart</MainButton>
     </View>
   );
 };
