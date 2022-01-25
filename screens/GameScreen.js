@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useState, useRef, useEffect } from "react";
 import NumberContainer from "../components/NumberContainer";
 import Card from "../components/Card";
@@ -15,7 +15,7 @@ const generateRandomBetween = (min, max, exclude) => {
 };
 
 export default GameScreen = (props) => {
-  const [rounds, setRounds] = useState(1);
+  const [pastGuesses, setPastGuesses] = useState([]);
   const [currentGuess, setCurrentGuess] = useState(() => {
     return generateRandomBetween(1, 100, props.userNumber);
   });
@@ -25,12 +25,12 @@ export default GameScreen = (props) => {
 
   useEffect(() => {
     if (currentGuess === props.userNumber) {
-      props.onGameOver(rounds);
+      props.onGameOver(pastGuesses.length);
     }
-  }, [rounds]);
+  }, [pastGuesses]);
 
   const handleLowerButton = () => {
-    setRounds(rounds + 1);
+    setPastGuesses((curPastGuesses) => [currentGuess, ...curPastGuesses]);
     if (currentGuess < highestGuess.current)
       highestGuess.current = currentGuess;
     setCurrentGuess(
@@ -38,7 +38,7 @@ export default GameScreen = (props) => {
     );
   };
   const handleGreaterButton = () => {
-    setRounds(rounds + 1);
+    setPastGuesses((curPastGuesses) => [currentGuess, ...curPastGuesses]);
     if (currentGuess > lowestGuess.current) lowestGuess.current = currentGuess;
     setCurrentGuess(
       generateRandomBetween(currentGuess, highestGuess.current, currentGuess)
@@ -57,7 +57,19 @@ export default GameScreen = (props) => {
           <Ionicons size={24} color="white" name="md-add" />
         </MainButton>
       </Card>
-      <Text>{props.userNumber}</Text>
+      <View style={styles.list}>
+        <ScrollView>
+          {pastGuesses.map((guess, index) => (
+            <View style={styles.guessEntryWrapper} key={index}>
+              <Text style={styles.guessEntry}>
+                #{pastGuesses.length - index}:
+              </Text>
+              <Text style={styles.guessEntry}>{guess}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+      {/* <Text>{props.userNumber}</Text> */}
     </View>
   );
 };
@@ -75,4 +87,19 @@ const styles = StyleSheet.create({
     width: 300,
     maxWidth: "80%",
   },
+  guessEntryWrapper: {
+    backgroundColor: "#caffee",
+    margin: 2,
+    width: "100%",
+    paddingVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  guessEntry: {
+    fontFamily: fontStyles.bodyText.fontFamily,
+    textAlign: "center",
+  },
+  list: {
+    width: "80%",
+  }
 });
